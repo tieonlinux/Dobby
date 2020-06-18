@@ -10,7 +10,7 @@
 #include <fcntl.h>
 
 
-#ifndef _WIN32
+#if platform2 != Windows
 #include <syslog.h>
 #endif
 
@@ -48,7 +48,7 @@ __attribute__((visibility("internal"))) int custom_log(const char *fmt, ...) {
   va_start(args, fmt);
   
 #pragma clang diagnostic ignored "-Wformat"
-#ifndef _WIN32
+#if platform2 != Windows
   if (_syslog_enabled) {
     vsyslog(LOG_ERR, fmt, args);
   }
