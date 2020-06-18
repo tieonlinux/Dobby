@@ -74,7 +74,11 @@ _LOGGING_INTERNAL_VISIBILITY int custom_log(const char *fmt, ...) {
           write(log_file_fd, buffer, strlen(buffer) + 1);
         }
       }
+#if platform2 != Windows
       fsync(log_file_fd);
+#else
+      //_flushall();
+ #end
     } else {
       vprintf(fmt, args);
     }
