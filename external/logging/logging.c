@@ -9,17 +9,18 @@
 #endif
 #include <fcntl.h>
 
+#if (defined(platform1) && (platform1 == windows)) || defined(_WIN32)
+  #ifndef _LOGGING_INTERNAL_VISIBILITY
+    #define _LOGGING_INTERNAL_VISIBILITY 
+  #endif
+#else
+  #include <syslog.h>
+  #ifndef _LOGGING_INTERNAL_VISIBILITY
+    #define _LOGGING_INTERNAL_VISIBILITY __attribute__((visibility("internal")))
+  #endif
+#endif
 
-#if platform2 != Windows
-#include <syslog.h>
-#ifndef _LOGGING_INTERNAL_VISIBILITY
-#define _LOGGING_INTERNAL_VISIBILITY __attribute__((visibility("internal")))
-#endif
-#endif
 
-#ifndef _LOGGING_INTERNAL_VISIBILITY
-#define _LOGGING_INTERNAL_VISIBILITY 
-#endif
 
 
 static int _syslog_enabled = 0;
@@ -56,7 +57,7 @@ _LOGGING_INTERNAL_VISIBILITY int custom_log(const char *fmt, ...) {
   va_start(args, fmt);
   
 #pragma clang diagnostic ignored "-Wformat"
-#if platform2 != Windows
+#if defined(platform1) && (platform1 != windows)
   if (_syslog_enabled) {
     vsyslog(LOG_ERR, fmt, args);
   }
@@ -74,10 +75,10 @@ _LOGGING_INTERNAL_VISIBILITY int custom_log(const char *fmt, ...) {
           write(log_file_fd, buffer, strlen(buffer) + 1);
         }
       }
-#if platform2 != Windows
-      fsync(log_file_fd);
+#if (defined(platform1) && (platform1 == windows)) || defined(_WIN32)
+      FlushFileBuffers((HANDLE) _get_osfhandle(log_file_fd));
 #else
-     FlushFileBuffers((HANDLE) _get_osfhandle(log_file_fd));
+      fsync(log_file_fd);
 #endif
     } else {
       vprintf(fmt, args);
