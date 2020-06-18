@@ -1,8 +1,6 @@
 #include "PlatformInterface/ExecMemory/CodePatchTool.h"
 #include "PlatformInterface/Common/Platform.h"
 
-#include "macros.h"
-
 #include <windows.h>
 
 using namespace zz;
