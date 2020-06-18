@@ -30,7 +30,7 @@ jobs:
             cmake_args: -DCMAKE_CXX_FLAGS="-m64 -Os" -DCMAKE_C_FLAGS="-m64 -Os"
           - arch: x86
             os: windows-latest
-            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x32 
+            cmake_args: -A Win32 -G "Visual Studio 16 2019"
           - arch: x64
             os: windows-latest
             cmake_args: -DCMAKE_GENERATOR_PLATFORM=x64 -A x64
