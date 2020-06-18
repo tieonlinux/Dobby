@@ -63,5 +63,5 @@ jobs:
           buildDirectory: '${{ runner.workspace }}/b/Dobby/'
       - uses: actions/upload-artifact@v2
         with:
-          name: dobby-${{ matrix.os }}-${{ matrix.arch }}
+          name: dobby-${{ matrix.platform }}-${{ matrix.arch }}
           path: '${{ runner.workspace }}/b/Dobby/'
