@@ -56,8 +56,7 @@ jobs:
         uses: lukka/run-cmake@v2
         id: runcmake
         with:
-          cmakeGenerator: 'Ninja'  
-          cmakeListsOrSettingsJson: 'CMakeListsTxtBasic'
+          cmakeListsOrSettingsJson: 'CMakeListsTxtAdvanced'
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           buildWithCMakeArgs: '-- -v'
           cmakeAppendedArgs: ${{ matrix.cmake_args }}
