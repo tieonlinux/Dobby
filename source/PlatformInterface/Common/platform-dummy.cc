@@ -1,4 +1,3 @@
-#include "macros.h"
 #include "logging/check_logging.h"
 #include "PlatformInterface/Common/Platform.h"
 
