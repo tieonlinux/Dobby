@@ -1,6 +1,5 @@
 #include "PlatformInterface/Common/Platform.h"
 #include "logging/check_logging.h"
-#include "macros.h"
 
 #include "UnifiedInterface/StdMemory.h"
 
