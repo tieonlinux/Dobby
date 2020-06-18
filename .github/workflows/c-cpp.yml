@@ -46,7 +46,8 @@ jobs:
       - uses: actions/checkout@v1
         with:
           submodules: true
-
+      - name: echo cmake_args
+        run: echo '${{ matrix.cmake_args }}'
       - uses: lukka/get-cmake@latest
       - name: dir
         run: find $RUNNER_WORKSPACE
