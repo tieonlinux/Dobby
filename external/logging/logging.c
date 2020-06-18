@@ -77,8 +77,8 @@ _LOGGING_INTERNAL_VISIBILITY int custom_log(const char *fmt, ...) {
 #if platform2 != Windows
       fsync(log_file_fd);
 #else
-      //_flushall();
- #end
+     FlushFileBuffers((HANDLE) _get_osfhandle(log_file_fd));
+#endif
     } else {
       vprintf(fmt, args);
     }
