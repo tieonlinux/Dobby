@@ -14,19 +14,35 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        arch: [x86, x64]
         include:
           - os: windows-latest
-            triplet: x64-windows
+            platform: windows
             vcpkgCommitId: '8a9a97315aefb3f8bc5d81bf66ca0025938b9c91'
-            vcpkgPackages: 'sqlite3'
           - os: ubuntu-latest
-            triplet: x64-linux
+            platform: linux
             vcpkgCommitId: '8a9a97315aefb3f8bc5d81bf66ca0025938b9c91'
-            vcpkgPackages: 'sqlite3'
           - os: macos-latest
-            triplet: x64-osx
+            platform: osx
             vcpkgCommitId: '8a9a97315aefb3f8bc5d81bf66ca0025938b9c91'
-            vcpkgPackages: 'sqlite3'
+          - arch: x86
+            os: ubuntu-latest
+            cmakep: -DCMAKE_CXX_FLAGS -m32 -DCMAKE_C_FLAGS -m32
+          - arch: x64
+            os: ubuntu-latest
+            cmakep: -DCMAKE_CXX_FLAGS -m64 -DCMAKE_C_FLAGS -m64
+          - arch: x86
+            os: windows-latest
+            cmakep: -DCMAKE_GENERATOR_PLATFORM=x32
+          - arch: x64
+            os: ubuntu-latest
+            cmakep: -DCMAKE_GENERATOR_PLATFORM=x64
+          - arch: x86
+            os: macos-latest
+            cmakep: -DPROJECT_ARCH="i386"
+          - arch: x64
+            os: macos-latest
+            cmakep: ''
 
     steps:
       - uses: actions/checkout@v1
@@ -42,7 +58,7 @@ jobs:
         id: runvcpkg
         with:
           vcpkgArguments: '${{ matrix.vcpkgPackages }}'
-          vcpkgTriplet: '${{ matrix.triplet }}'
+          vcpkgTriplet: '${{ matrix.arch }}-${{ matrix.platform }}'
           vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
           vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'
       - name: dir
@@ -58,8 +74,8 @@ jobs:
           cmakeListsOrSettingsJson: 'CMakeListsTxtBasic'
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           useVcpkgToolchainFile: true
-          buildWithCMakeArgs: '-- -v'
-          buildDirectory: '${{ runner.workspace }}/b/ninja/'
+          buildWithCMakeArgs: '-- -v -DCMAKE_BUILD_TYPE=Release'
+          buildDirectory: '${{ runner.workspace }}/b/Dobby/'
       - name: Run CMake+Ninja with triplet (cmd)
         uses: lukka/run-cmake@v2
         id: runcmake_cmd
@@ -68,9 +84,9 @@ jobs:
           cmakeListsOrSettingsJson: 'CMakeListsTxtBasic'
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           useVcpkgToolchainFile: true
-          buildWithCMakeArgs: '-- -v'
+          buildWithCMakeArgs: '-- -v -DCMAKE_BUILD_TYPE=Release'
           vcpkgTriplet: ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}
-          buildDirectory: '${{ runner.workspace }}/b/ninja/'
+          buildDirectory: '${{ runner.workspace }}/b/Dobby/'
       - name: Run CMake+Ninja with triplet (bash)
         if: false
         uses: lukka/run-cmake@v2
@@ -82,5 +98,5 @@ jobs:
           useVcpkgToolchainFile: true
           buildWithCMakeArgs: '-- -v'
           vcpkgTriplet: ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}
-          buildDirectory: '${{ runner.workspace }}/b/ninja-bash/'
+          buildDirectory: '${{ runner.workspace }}/b/Dobby/'
           useShell: bash
