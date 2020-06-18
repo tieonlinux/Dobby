@@ -36,7 +36,7 @@ jobs:
             cmake_args: -DCMAKE_GENERATOR_PLATFORM=x64 -A x64
           - arch: x86
             os: macos-latest
-            cmake_args: -DPROJECT_ARCH=i386 -DCMAKE_OSX_ARCHITECTURES=i386
+            cmake_args: -DPROJECT_ARCH=i386 -DCMAKE_OSX_ARCHITECTURES=i386 -DCMAKE_EXE_LINKER_FLAGS="-lSystem"
           - arch: x64
             os: macos-latest
             cmake_args: -DCMAKE_OSX_ARCHITECTURES=x86_64
