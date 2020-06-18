@@ -51,7 +51,7 @@ static int check_log_file_available() {
   return 0;
 }
 
-_INTERNAL_VISIBILITY int custom_log(const char *fmt, ...) {
+_LOGGING_INTERNAL_VISIBILITY int custom_log(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
   
