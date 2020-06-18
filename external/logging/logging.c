@@ -12,17 +12,25 @@
 
 #if platform2 != Windows
 #include <syslog.h>
+#ifndef _LOGGING_INTERNAL_VISIBILITY
+#define _LOGGING_INTERNAL_VISIBILITY __attribute__((visibility("internal")))
+#endif
 #endif
 
+#ifndef _LOGGING_INTERNAL_VISIBILITY
+#define _LOGGING_INTERNAL_VISIBILITY 
+#endif
+
+
 static int _syslog_enabled = 0;
-__attribute__((visibility("internal"))) void switch_to_syslog(void) {
+_LOGGING_INTERNAL_VISIBILITY void switch_to_syslog(void) {
   _syslog_enabled = 1;
 }
 
 static int _file_log_enabled     = 0;
 static const char *log_file_path = NULL;
 static int log_file_fd           = -1;
-__attribute__((visibility("internal"))) void switch_to_file_log(const char *path) {
+_LOGGING_INTERNAL_VISIBILITY void switch_to_file_log(const char *path) {
   _file_log_enabled = 1;
   log_file_path     = strdup(path);
 
@@ -43,7 +51,7 @@ static int check_log_file_available() {
   return 0;
 }
 
-__attribute__((visibility("internal"))) int custom_log(const char *fmt, ...) {
+_INTERNAL_VISIBILITY int custom_log(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
   
