@@ -9,7 +9,10 @@
 #endif
 #include <fcntl.h>
 
+
+#ifndef _WIN32
 #include <syslog.h>
+#endif
 
 static int _syslog_enabled = 0;
 __attribute__((visibility("internal"))) void switch_to_syslog(void) {
@@ -43,10 +46,13 @@ static int check_log_file_available() {
 __attribute__((visibility("internal"))) int custom_log(const char *fmt, ...) {
   va_list args;
   va_start(args, fmt);
+  
 #pragma clang diagnostic ignored "-Wformat"
+#ifndef _WIN32
   if (_syslog_enabled) {
     vsyslog(LOG_ERR, fmt, args);
   }
+#endif
   if (_file_log_enabled) {
     if (check_log_file_available()) {
 #define MAX_PRINT_BUFFER_SIZE 1024
