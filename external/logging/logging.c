@@ -13,6 +13,7 @@
   #ifndef _LOGGING_INTERNAL_VISIBILITY
     #define _LOGGING_INTERNAL_VISIBILITY 
   #endif
+  #include <windows.h>
   #include <fileapi.h>
 #else
   #include <syslog.h>
