@@ -27,13 +27,13 @@ jobs:
             cmake_args: -DCMAKE_CXX_FLAGS="-m32 -Os" -DCMAKE_C_FLAGS="-m32 -Os"
           - arch: x64
             os: ubuntu-latest
-            cmake_args: -m64
+            cmake_args: -DCMAKE_CXX_FLAGS="-m64 -Os" -DCMAKE_C_FLAGS="-m64 -Os"
           - arch: x86
             os: windows-latest
-            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x32
+            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x32 -A Win32
           - arch: x64
             os: windows-latest
-            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x64
+            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x64 -A x64
           - arch: x86
             os: macos-latest
             cmake_args: -DPROJECT_ARCH=i386 -DCMAKE_OSX_ARCHITECTURES=i386
@@ -52,6 +52,9 @@ jobs:
       - name: dir
         run: find $RUNNER_WORKSPACE
         shell: bash
+      - name: Install 32 bit compiler (ubuntu)
+        if: matrix.os.contains('ubuntu')
+        run: sudo apt-get install gcc-multilib
       - name: Run CMake
         uses: lukka/run-cmake@v2
         id: runcmake
