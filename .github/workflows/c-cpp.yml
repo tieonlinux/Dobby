@@ -53,7 +53,7 @@ jobs:
         run: find $RUNNER_WORKSPACE
         shell: bash
       - name: Install 32 bit compiler (ubuntu)
-        if: matrix.os.contains('ubuntu')
+        if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.arch, 'x86')
         run: sudo apt-get install gcc-multilib
       - name: Run CMake
         uses: lukka/run-cmake@v2
