@@ -24,22 +24,22 @@ jobs:
             platform: osx
           - arch: x86
             os: ubuntu-latest
-            cmakep: -DCMAKE_CXX_FLAGS -m32 -DCMAKE_C_FLAGS -m32
+            cmake_args: -DCMAKE_CXX_FLAGS -m32 -DCMAKE_C_FLAGS -m32
           - arch: x64
             os: ubuntu-latest
-            cmakep: -DCMAKE_CXX_FLAGS -m64 -DCMAKE_C_FLAGS -m64
+            cmake_args: -DCMAKE_CXX_FLAGS -m64 -DCMAKE_C_FLAGS -m64
           - arch: x86
             os: windows-latest
-            cmakep: -DCMAKE_GENERATOR_PLATFORM=x32
+            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x32
           - arch: x64
             os: ubuntu-latest
-            cmakep: -DCMAKE_GENERATOR_PLATFORM=x64
+            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x64
           - arch: x86
             os: macos-latest
-            cmakep: -DPROJECT_ARCH="i386"
+            cmake_args: -DPROJECT_ARCH="i386"
           - arch: x64
             os: macos-latest
-            cmakep: ''
+            cmake_args: ''
       
 
     steps:
@@ -58,7 +58,8 @@ jobs:
           cmakeGenerator: 'Ninja'  
           cmakeListsOrSettingsJson: 'CMakeListsTxtBasic'
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
-          buildWithCMakeArgs: '${{ matrix.cmakep }} -DCMAKE_BUILD_TYPE=Release -- -v'
+          buildWithCMakeArgs: '-- -v'
+          cmakeAppendedArgs: "${{ matrix.cmake_args }} -DCMAKE_BUILD_TYPE=Release"
           buildDirectory: '${{ runner.workspace }}/b/Dobby/'
       - uses: actions/upload-artifact@v2
         with:
