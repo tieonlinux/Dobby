@@ -43,7 +43,8 @@
 #elif defined(_M_X64) || defined(__x86_64__)
 #define PTR_PREFIX "l"
 #else
-#error "unsupported architecture"
+#pragma message("WARNING: unsupported architecture ?")
+#define PTR_PREFIX "l"
 #endif
 
 // deprecated declared
