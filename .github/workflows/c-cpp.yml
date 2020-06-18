@@ -24,19 +24,19 @@ jobs:
             platform: osx
           - arch: x86
             os: ubuntu-latest
-            cmake_args: -m32
+            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x32 -DCMAKE_CXX_FLAGS="-m32 -Os" -DCMAKE_C_FLAGS="-m32 -Os"
           - arch: x64
             os: ubuntu-latest
             cmake_args: -m64
           - arch: x86
             os: windows-latest
-            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x32 -m32
+            cmake_args: -DCMAKE_GENERATOR_PLATFORM=x32 -DCMAKE_CXX_FLAGS="-m32 -Os" -DCMAKE_C_FLAGS="-m32 -Os"
           - arch: x64
             os: windows-latest
             cmake_args: -DCMAKE_GENERATOR_PLATFORM=x64
           - arch: x86
             os: macos-latest
-            cmake_args: -DPROJECT_ARCH="i386" -DCMAKE_OSX_ARCHITECTURES=i386
+            cmake_args: -DPROJECT_ARCH=i386 -DCMAKE_OSX_ARCHITECTURES=i386 -DCMAKE_GENERATOR_PLATFORM=x32
           - arch: x64
             os: macos-latest
             cmake_args: -DCMAKE_OSX_ARCHITECTURES=x86_64
@@ -60,8 +60,9 @@ jobs:
           cmakeListsOrSettingsJson: 'CMakeListsTxtBasic'
           cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
           buildWithCMakeArgs: '-- -v'
-          cmakeAppendedArgs: "${{ matrix.cmake_args }} -DCMAKE_BUILD_TYPE=Release"
+          cmakeAppendedArgs: ${{ matrix.cmake_args }}
           buildDirectory: '${{ runner.workspace }}/b/Dobby/'
+          cmakeBuildType: Release
       - uses: actions/upload-artifact@v2
         with:
           name: dobby-${{ matrix.platform }}-${{ matrix.arch }}
